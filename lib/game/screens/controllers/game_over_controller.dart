@@ -21,7 +21,7 @@ Future<void> gameOver(context) async {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
-                  "GAMEOVER",
+                  "GAME OVER",
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w500,

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gamofled/game/screens/initial_screen.dart';
 import 'components/button_stop.dart';
 import 'controllers/game_over_controller.dart';
 import 'components/group_led.dart';
@@ -21,12 +22,18 @@ class _GamofLedState extends State<GamofLed> {
   List<Timer> timer = [];
   int mili = 500;
   int level = 1;
+  bool initialScreen = true;
 
   _GamofLedState() {
     list = initList();
+  }
 
-    labelButton = "START";
-    start(Duration(milliseconds: mili));
+  void changeScreen() {
+    setState(() {
+      labelButton = "START";
+      start(Duration(milliseconds: mili));
+      initialScreen = false;
+    });
   }
 
   void activateLed(int led) {
@@ -64,7 +71,7 @@ class _GamofLedState extends State<GamofLed> {
     for (Led e in list) {
       if (e.id == 1 && e.activate) {
         level++;
-        Vibration.vibrate(duration: 500);
+        Vibration.vibrate(duration: 250);
         mili <= 300 ? mili -= 10 : mili -= 25;
         stopGame();
         print(mili);
@@ -111,36 +118,40 @@ class _GamofLedState extends State<GamofLed> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                height: 70,
-                child: Center(
-                  child: Text(
-                    "Level $level",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(0, 1),
-                          blurRadius: 2,
-                          color: Colors.white12,
+        child: initialScreen
+            ? InitialScreen(
+                changeScreen: changeScreen,
+              )
+            : SafeArea(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 70,
+                      child: Center(
+                        child: Text(
+                          "Level $level",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                offset: Offset(0, 1),
+                                blurRadius: 2,
+                                color: Colors.white12,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    GroupLed(
+                      groupList: list,
+                    ),
+                    ButtonStop(label: labelButton, stop: buttonStop),
+                  ],
                 ),
               ),
-              GroupLed(
-                groupList: list,
-              ),
-              ButtonStop(label: labelButton, stop: buttonStop),
-            ],
-          ),
-        ),
       ),
     );
   }

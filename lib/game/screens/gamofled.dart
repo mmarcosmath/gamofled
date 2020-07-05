@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'components/button_stop.dart';
+import 'controllers/game_over_controller.dart';
 import 'components/group_led.dart';
+import 'models/init_list.dart';
 import 'components/led.dart';
+import 'package:vibration/vibration.dart';
 
 class GamofLed extends StatefulWidget {
   @override
@@ -14,29 +18,15 @@ class _GamofLedState extends State<GamofLed> {
   List<Led> list;
   String labelButton;
   int index = 1;
-  Timer timer;
+  List<Timer> timer = [];
   int mili = 500;
   int level = 1;
 
   _GamofLedState() {
-    initList();
-  }
+    list = initList();
 
-  void initList() {
-    list = [
-      Led(id: 5),
-      Led(id: 6),
-      Led(id: 7),
-      Led(id: 4),
-      Led(sized: true),
-      Led(id: 8),
-      Led(id: 3),
-      Led(sized: true),
-      Led(id: 9),
-      Led(id: 2),
-      Led(id: 1, primary: true, activate: true),
-      Led(id: 10),
-    ];
+    labelButton = "START";
+    start(Duration(milliseconds: mili));
   }
 
   void activateLed(int led) {
@@ -56,18 +46,25 @@ class _GamofLedState extends State<GamofLed> {
     return index;
   }
 
+  void timerCancel() {
+    timer.forEach((time) => time.cancel());
+  }
+
   void stopGame() {
     setState(() {
-      timer.cancel();
+      timerCancel();
+
       labelButton = "STOP";
       start(Duration(milliseconds: mili));
     });
   }
 
-  void buttonStop() {
+  Future<void> buttonStop() async {
+    timerCancel();
     for (Led e in list) {
       if (e.id == 1 && e.activate) {
         level++;
+        Vibration.vibrate(duration: 500);
         mili <= 300 ? mili -= 10 : mili -= 25;
         stopGame();
         print(mili);
@@ -81,36 +78,29 @@ class _GamofLedState extends State<GamofLed> {
     }
     if (level != 1) {
       print("GameOver");
+      await gameOver(context);
       level = 1;
       setState(() {
         labelButton = "START";
       });
 
       mili = 500;
-      timer.cancel();
     }
   }
 
   void start(Duration duration) {
     labelButton = "STOP";
-    Timer.periodic(duration, (Timer timer) {
-      this.timer = timer;
-      initList();
+    timerCancel();
+    Timer.periodic(duration, (Timer t) {
+      this.timer.add(t);
+      list = initList();
       activateLed(nextLed());
     });
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    initList();
-    labelButton = "START";
-    start(Duration(milliseconds: mili));
-  }
-
-  @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -118,8 +108,7 @@ class _GamofLedState extends State<GamofLed> {
             image: AssetImage(
               'assets/images/background.png',
             ),
-            scale: 0.01,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(

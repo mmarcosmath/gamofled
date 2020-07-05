@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'led.dart';
+
 class GroupLed extends StatelessWidget {
-  final List<Widget> groupList;
-  GroupLed({@required this.groupList});
+  final List<Led> groupList;
+  GroupLed({this.groupList});
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -13,19 +15,19 @@ class GroupLed extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [...groupList.sublist(0, 3)],
+              children: groupList.sublist(0, 3),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [...groupList.sublist(3, 6)],
+              children: groupList.sublist(3, 6),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [...groupList.sublist(6, 9)],
+              children: groupList.sublist(6, 9),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [...groupList.sublist(9, 12)],
+              children: groupList.sublist(9, 12),
             ),
           ],
         ),

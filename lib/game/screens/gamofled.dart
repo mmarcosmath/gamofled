@@ -16,7 +16,7 @@ class GamofLed extends StatefulWidget {
 }
 
 class _GamofLedState extends State<GamofLed> {
-  List<Led> list;
+  List<Led> list = [];
   String labelButton;
   int index = 1;
   List<Timer> timer = [];
@@ -55,6 +55,7 @@ class _GamofLedState extends State<GamofLed> {
 
   void timerCancel() {
     timer.forEach((time) => time.cancel());
+    timer.removeWhere((element) => !element.isActive);
   }
 
   void stopGame() {
@@ -90,7 +91,6 @@ class _GamofLedState extends State<GamofLed> {
       setState(() {
         labelButton = "START";
       });
-
       mili = 500;
     }
   }
@@ -100,7 +100,6 @@ class _GamofLedState extends State<GamofLed> {
     timerCancel();
     Timer.periodic(duration, (Timer t) {
       this.timer.add(t);
-      list = initList();
       activateLed(nextLed());
     });
   }

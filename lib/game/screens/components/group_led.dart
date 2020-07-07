@@ -10,6 +10,7 @@ class GroupLed extends StatelessWidget {
     return Expanded(
       child: Container(
         child: Column(
+          key: UniqueKey(),
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gamofled/game/screens/components/popop_menu.dart';
 import 'package:gamofled/game/screens/initial_screen.dart';
 import 'components/button_stop.dart';
 import 'controllers/game_over_controller.dart';
@@ -122,11 +123,18 @@ class _GamofLedState extends State<GamofLed> {
                 changeScreen: changeScreen,
               )
             : SafeArea(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 70,
-                      child: Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CustomPopupMenu(),
+                        ],
+                      ),
+                      Center(
                         child: Text(
                           "Level $level",
                           style: TextStyle(
@@ -143,12 +151,12 @@ class _GamofLedState extends State<GamofLed> {
                           ),
                         ),
                       ),
-                    ),
-                    GroupLed(
-                      groupList: list,
-                    ),
-                    ButtonStop(label: labelButton, stop: buttonStop),
-                  ],
+                      GroupLed(
+                        groupList: list,
+                      ),
+                      ButtonStop(label: labelButton, stop: buttonStop),
+                    ],
+                  ),
                 ),
               ),
       ),

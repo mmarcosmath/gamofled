@@ -4,7 +4,7 @@ class InitialScreen extends StatelessWidget {
   final Function() changeScreen;
 
   Future<void> timeChange() async {
-    await Future.delayed(Duration(seconds: 3), changeScreen);
+    await Future.delayed(Duration(seconds: 1), changeScreen);
   }
 
   InitialScreen({this.changeScreen});

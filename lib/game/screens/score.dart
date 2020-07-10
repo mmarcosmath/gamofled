@@ -3,34 +3,37 @@ import 'package:flutter/material.dart';
 class Score extends StatelessWidget {
   final List<Map<String, dynamic>> score;
 
-  Score({this.score}) {
-    score.sort((a, b) => a['point'] >= b['point'] ? a['point'] : b['point']);
-  }
+  Score({this.score});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/images/background.png',
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/images/background.png',
+              ),
+              fit: BoxFit.cover,
             ),
-            fit: BoxFit.cover,
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Score",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+              Container(
+                height: 70,
+                child: Center(
+                  child: Text(
+                    "Score",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
               Expanded(

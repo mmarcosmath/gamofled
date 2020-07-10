@@ -124,16 +124,15 @@ class _GamofLedState extends State<GamofLed> {
               )
             : SafeArea(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 50),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          CustomPopupMenu(),
-                        ],
-                      ),
+                      Container(
+                          margin: EdgeInsets.only(
+                            right: MediaQuery.of(context).size.width * 0.12,
+                          ),
+                          alignment: Alignment.centerRight,
+                          child: CustomPopupMenu()),
                       Center(
                         child: Text(
                           "Level $level",

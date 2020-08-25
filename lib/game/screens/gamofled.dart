@@ -17,7 +17,7 @@ class GamofLed extends StatefulWidget {
 }
 
 class _GamofLedState extends State<GamofLed> {
-  List<Led> list = [];
+  Map<int, Led> list = {};
   String labelButton;
   int index = 1;
   List<Timer> timer = [];
@@ -39,13 +39,13 @@ class _GamofLedState extends State<GamofLed> {
 
   void activateLed(int led) {
     setState(() {
-      for (Led e in list) {
+      list.forEach((key, e) {
         if (e.id == led) {
           e.activate = true;
         } else {
           e.activate = false;
         }
-      }
+      });
     });
   }
 
@@ -70,7 +70,7 @@ class _GamofLedState extends State<GamofLed> {
 
   Future<void> buttonStop() async {
     timerCancel();
-    for (Led e in list) {
+    for (Led e in list.values) {
       if (e.id == 1 && e.activate) {
         level++;
         Vibration.vibrate(duration: 250);
